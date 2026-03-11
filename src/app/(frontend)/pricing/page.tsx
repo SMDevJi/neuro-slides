@@ -2,7 +2,9 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div className='min-h-[70vh]'>
+      <h1 className='mt-20'>pricing</h1>
+    </div>
   )
 }
 
