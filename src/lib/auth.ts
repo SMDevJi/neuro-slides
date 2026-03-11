@@ -43,7 +43,7 @@ const authoptions: NextAuthOptions = {
                         name: existUser.name,
                         email: existUser.email,
                         image: existUser.image,
-                        credits:existUser.credits
+                        credits: existUser.credits
                     }
                 }
 
@@ -55,6 +55,7 @@ const authoptions: NextAuthOptions = {
         async signIn({ account, user }) {
             if (account?.provider == 'google') {
                 await connectDB()
+
                 let existUser = await User.findOne({ email: user.email?.toLowerCase().trim() })
 
                 if (!existUser) {
@@ -65,18 +66,30 @@ const authoptions: NextAuthOptions = {
                     })
                 }
                 user.id = existUser._id.toString()
-                user.credits=existUser.credits
+                user.name = existUser.name
+                user.email = existUser.email
+                user.image = existUser.image
+                user.credits = existUser.credits
             }
             return true
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
+
+            // first login
             if (user) {
                 token.id = user.id
                 token.name = user.name
                 token.email = user.email
                 token.image = user.image
-                token.credits=user.credits
+                token.credits = user.credits
             }
+
+            // when update() is called
+            if (trigger === "update") {
+                if (session?.name) token.name = session.name
+                if (session?.image) token.image = session.image
+            }
+
             return token
         },
         async session({ session, token }) {
@@ -85,7 +98,7 @@ const authoptions: NextAuthOptions = {
                 session.user.name = token.name
                 session.user.email = token.email
                 session.user.image = token.image as string
-                session.user.credits=token.credits
+                session.user.credits = token.credits
             }
             return session
         }
