@@ -1,36 +1,40 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
-interface IUser {
-    _id: mongoose.Schema.Types.ObjectId;
-    name: string;
+export interface IUser {
+    _id?: mongoose.Types.ObjectId;
+    name?: string;
     email: string;
     image?: string;
     password?: string;
-    credits:number;
-    createdAt: Date;
-    updatedAt: Date;
+    credits: number | "unlimited";
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
-const userSchema = new mongoose.Schema<IUser>({
-    name: {
-        type: String
+const userSchema = new Schema<IUser>(
+    {
+        name: {
+            type: String
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true
+        },
+        image: {
+            type: String
+        },
+        password: {
+            type: String
+        },
+        credits: {
+            type: Schema.Types.Mixed,
+            default: 2
+        }
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    image: {
-        type: String
-    },
-    password: {
-        type: String
-    },
-    credits:{
-        type:Number,
-        default:2
-    }
-}, { timestamps: true })
+    { timestamps: true }
+);
 
-const User = mongoose.models?.user || mongoose.model('User', userSchema)
+const User = mongoose.models?.User || model<IUser>("User", userSchema);
+
 export default User;

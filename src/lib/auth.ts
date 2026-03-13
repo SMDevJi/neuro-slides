@@ -86,8 +86,10 @@ const authoptions: NextAuthOptions = {
 
             // when update() is called
             if (trigger === "update") {
+                console.log(session.credits)
                 if (session?.name) token.name = session.name
                 if (session?.image) token.image = session.image
+                if (session?.credits) token.credits = session.credits
             }
 
             return token

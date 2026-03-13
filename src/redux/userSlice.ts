@@ -6,7 +6,7 @@ interface IUser {
     email: string | null 
     image?: string | null 
     name: string | null 
-    credits: number | null 
+    credits: number | null | 'unlimited'
 }
 
 const initialState: IUser = {

@@ -7,7 +7,6 @@ import Footer from "@/components/Footer";
 import ToastContainer from "@/components/ToastContainer";
 import ClientProvider from "@/providers/ClientProvider";
 import ReduxProvider from "@/providers/ReduxProvider";
-import AuthSync from "@/components/AuthSync";
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -32,7 +31,6 @@ export default function RootLayout({
       >
         <ClientProvider>
           <ReduxProvider>
-            <AuthSync />
             <Navbar />
             {children}
             <ToastContainer />

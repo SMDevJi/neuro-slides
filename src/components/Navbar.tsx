@@ -9,8 +9,6 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import Authentication from "./Authentication"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "@/redux/store"
 import { FaCoins } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
@@ -25,14 +23,15 @@ import { toast } from "sonner";
 
 import { IoIosLogOut } from "react-icons/io";
 import { FaUserEdit } from "react-icons/fa";
-import { setUser } from "@/redux/userSlice";
-
+import { TiInfinity } from "react-icons/ti";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false)
-    const user = useSelector((state: RootState) => state?.user)
+
+    const { data: session, update } = useSession()
+    const user = session?.user
     console.log(user)
-    const { update } = useSession()
+
 
     const [error, setError] = useState<null | string>(null)
     const [editName, setEditName] = useState('')
@@ -40,10 +39,8 @@ const Navbar = () => {
     const [backendImg, setBackendImg] = useState<File | undefined>()
     const [updating, setUpdating] = useState(false)
 
-    const dispatch = useDispatch()
 
     const imgRef = useRef<HTMLInputElement>(null)
-
 
 
     const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +66,6 @@ const Navbar = () => {
                 formdata.append('file', backendImg)
             }
             const res = await axios.patch('/api/edit', formdata)
-            dispatch(setUser(res?.data))
 
             await update({
                 name: res.data.name,
@@ -126,7 +122,7 @@ const Navbar = () => {
                         <div className="logged-in flex items-center justify-center gap-2">
                             <div className="left flex justify-center items-center gap-1 bg-green-200 p-1 px-2 md:p-2 rounded-2xl font-bold">
                                 <FaCoins size={20} />
-                                {user?.credits}
+                                {user?.credits === 'unlimited' ? <TiInfinity /> : user?.credits}
                             </div>
 
                             <div className="right flex justify-center">

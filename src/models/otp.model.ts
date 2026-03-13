@@ -1,20 +1,37 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, model, Document } from "mongoose";
 
-const otpSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        lowercase: true
-    },
-    otp: {
-        type: String,
-        required: true
-    },
-    expiresAt: {
-        type: Date,
-        required: true
-    },
-    verified: { type: Boolean, default: false }
-}, { timestamps: true });
+export interface IOtp extends Document {
+    email: string;
+    otp: string;
+    expiresAt: Date;
+    verified: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
 
-export default mongoose.models?.Otp || mongoose.model("Otp", otpSchema);
+const otpSchema = new Schema<IOtp>(
+    {
+        email: {
+            type: String,
+            required: true,
+            lowercase: true
+        },
+        otp: {
+            type: String,
+            required: true
+        },
+        expiresAt: {
+            type: Date,
+            required: true
+        },
+        verified: {
+            type: Boolean,
+            default: false
+        }
+    },
+    { timestamps: true }
+);
+
+const otpModel = mongoose.models?.Otp || model<IOtp>("Otp", otpSchema);
+
+export default otpModel;
