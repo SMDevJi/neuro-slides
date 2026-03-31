@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/input-otp"
 import { toast } from "sonner";
 import LoginForm from "./LoginForm";
-
+import { motion, AnimatePresence } from 'framer-motion';
 
 //https://www.shadcn.io/patterns/dialog-standard-17
 
@@ -357,7 +357,19 @@ const Authentication = () => {
             <TabsContent value="signup" >
                 <div className="space-y-6">
                     <h1 className="text-center text-xl font-semibold mt-2">Sign Up</h1>
-                    {steps[currentStep]}
+
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentStep} // <--- key forces re-mount on step change
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }} // optional exit animation
+                            transition={{ duration: 0.4 }}
+                        >
+                            {steps[currentStep]}
+                        </motion.div>
+                    </AnimatePresence>
+
                     <div className="flex items-center justify-center">
                         <div className="flex gap-2">
                             {steps.map((_, index) => (

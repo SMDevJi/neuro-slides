@@ -1,10 +1,14 @@
+import AllProjects from '@/components/AllProjects'
 import React from 'react'
+import PromptArea from "@/components/PromptArea";
 
 const page = () => {
   return (
-    <div className='min-h-[75vh]'>
-      <h1 className='mt-20'>workspace</h1>
-    </div>
+    <>
+      <PromptArea />
+      <AllProjects />
+    </>
+
   )
 }
 

@@ -30,7 +30,7 @@ const Navbar = () => {
 
     const { data: session, update } = useSession()
     const user = session?.user
-    console.log(user)
+    //console.log(user)
 
 
     const [error, setError] = useState<null | string>(null)

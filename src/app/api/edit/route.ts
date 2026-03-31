@@ -16,6 +16,13 @@ export async function PATCH(req: NextRequest) {
         const file = formdata.get('file') as Blob
         const name = formdata.get('name') as string
 
+        if (!session) {
+            return NextResponse.json(
+                { message: 'Unauthorized' },
+                { status: 401 }
+            )
+        }
+
         let imgUrl;
 
         if (file) {
