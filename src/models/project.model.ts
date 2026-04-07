@@ -6,6 +6,10 @@ export type Outline = {
     outline: string
 }
 
+export type Slide = {
+    code: string
+}
+
 export type DesignStyle = {
     styleName: string
     colors: {
@@ -27,13 +31,16 @@ export interface IProject {
     userInputPrompt: string;
     noOfSlides: string
     userId: mongoose.Types.ObjectId;
-    outline?: Outline[] | []
-    designStyle?: DesignStyle | {}
+    outline?: Outline[]
+    designStyle?: DesignStyle
+    slides?: Slide[]
     // expiresAt: Date;
     // verified: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+
 
 
 const outlineSchema = new Schema<Outline>({
@@ -46,6 +53,14 @@ const outlineSchema = new Schema<Outline>({
         required: true
     },
     outline: {
+        type: String,
+        required: true
+    }
+});
+
+
+const slideSchema = new Schema<Slide>({
+    code: {
         type: String,
         required: true
     }
@@ -114,9 +129,13 @@ const projectSchema = new Schema<IProject>(
             type: [outlineSchema],
             required: false
         },
-        designStyle:{
-            type:designStyleSchema,
-            required:false
+        designStyle: {
+            type: designStyleSchema,
+            required: false
+        },
+        slides: {
+            type:[slideSchema],
+            required: false
         }
         // expiresAt: {
         //     type: Date,

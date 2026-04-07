@@ -89,7 +89,7 @@ const authoptions: NextAuthOptions = {
                 console.log(session.credits)
                 if (session?.name) token.name = session.name
                 if (session?.image) token.image = session.image
-                if (session?.credits) token.credits = session.credits
+                if (session?.credits !== undefined) token.credits = session.credits;
             }
 
             return token

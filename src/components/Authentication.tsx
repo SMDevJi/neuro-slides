@@ -363,7 +363,7 @@ const Authentication = () => {
                             key={currentStep} // <--- key forces re-mount on step change
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }} // optional exit animation
+                            exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.4 }}
                         >
                             {steps[currentStep]}

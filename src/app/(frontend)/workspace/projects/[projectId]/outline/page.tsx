@@ -9,7 +9,19 @@ import { Button } from "@/components/ui/button";
 import { FaArrowRight } from "react-icons/fa";
 import { toast } from "sonner";
 import { VscLoading } from "react-icons/vsc";
-
+import { useSession } from "next-auth/react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import Link from "next/link";
 
 
 const page = () => {
@@ -23,6 +35,10 @@ const page = () => {
     const [outlineGenerating, setOutlineGenerating] = useState(false)
     const [outline, setOutline] = useState<Outline[] | []>([])
     const [error, setError] = useState<string | null>(null);
+    const [alertOpen, setAlertOpen] = useState(false)
+    const { data: session, update } = useSession()
+    const user = session?.user
+
 
     useEffect(() => {
         projectId && fetchProject()
@@ -87,6 +103,11 @@ const page = () => {
             toast.error('Please select style!')
             return
         }
+        if ((typeof user?.credits == 'number' && user?.credits <= 0) || (typeof user?.credits == 'string' && user?.credits != 'unlimited')) {
+            setAlertOpen(true)
+            return
+        }
+
         try {
             setUpdating(true)
             const resp = await axios.post('/api/projects/outline/save', {
@@ -123,10 +144,13 @@ const page = () => {
             <div className="max-w-3xl">
                 <h1 className=" text-2xl font-bold">Select Settings and Slider Outline</h1>
                 <SliderStyles selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} />
+                <h1 className='font-bold text-xl mt-7'>Sliders Outline</h1>
                 <OutlineArea outlineGenerating={outlineGenerating} outline={outline}
                     handleUpdateOutline={(index: string, value: Outline) => handleUpdateOutline(index, value)}
+                    showEdit={true}
                 />
             </div>
+
 
             <Button
                 onClick={saveOutlineAndStyle}
@@ -134,6 +158,26 @@ const page = () => {
                 className='fixed bottom-6 transform left-1/2 -translate-x-1/2 py-6 px-5 text-lg cursor-pointer disabled:opacity-100 disabled:bg-green-300 disabled:cursor-not-allowed'>
                 {updating ? 'Generating Slides..' : 'Generate Slides'} {updating ? <VscLoading className="animate-spin" /> : <FaArrowRight />}
             </Button>
+
+            <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+                <AlertDialogTrigger asChild>
+
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Not enough credits!</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            You don't have enough credits left! Please purchase.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
+                        <Link href='/pricing'>
+                            <Button className="cursor-pointer">Buy Credits</Button>
+                        </Link>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

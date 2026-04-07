@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/db";
 import Otp from "@/models/otp.model";
-import User from "@/models/user.model"; // ✅ import user model
+import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 import { otpValidMins } from "../send-otp/route";
 import { sendOtp } from "@/lib/otp";

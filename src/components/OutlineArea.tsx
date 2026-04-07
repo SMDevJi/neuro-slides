@@ -9,15 +9,17 @@ type pageProps = {
     outlineGenerating: boolean
     outline: Outline[]
     handleUpdateOutline:any
+    className?:string|null
+    showEdit:boolean
 }
 
-const OutlineArea = ({ outlineGenerating, outline,handleUpdateOutline }: pageProps) => {
+const OutlineArea = ({ outlineGenerating, outline,handleUpdateOutline,className,showEdit }: pageProps) => {
 
     console.log(outlineGenerating)
 
     return (
-        <div className='my-7'>
-            <h1 className='font-bold text-xl'>Sliders Outline</h1>
+        <div className={`my-7 ${className}`}>
+            
             {outlineGenerating &&
 
                 <div className=' mt-1'>
@@ -40,11 +42,11 @@ const OutlineArea = ({ outlineGenerating, outline,handleUpdateOutline }: pagePro
                             <p>{item.outline}</p>
                         </div>
 
-                        <EditOutlineDialog outlineData={item} onUpdate={handleUpdateOutline}>
+                        {showEdit && <EditOutlineDialog outlineData={item} onUpdate={handleUpdateOutline}>
                             <button className='p-2 bg-gray-200 rounded-md cursor-pointer'>
                                 <MdEditNote size={30} />
                             </button>
-                        </EditOutlineDialog>
+                        </EditOutlineDialog>}
 
                     </div>
                 )}

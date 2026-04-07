@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         );
     } catch (error) {
         return NextResponse.json(
-            { message: `failed to register user ${error}` },
+            { message: `failed to generate outline ${error}` },
             { status: 500 }
         );
     }

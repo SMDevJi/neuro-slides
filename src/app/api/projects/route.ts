@@ -40,3 +40,38 @@ export async function POST(req: NextRequest) {
         );
     }
 }
+
+
+
+
+
+
+
+
+
+export async function GET(req: NextRequest) {
+    try {
+        await connectDB();
+        const session = await getServerSession(authoptions)
+
+        const userId = session?.user?.id
+
+        const projects = await Project.find({ userId });;
+
+        if (!projects) {
+            return NextResponse.json(
+                { message: "No Project found" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json({
+            projects,
+        });
+    } catch (error) {
+        return NextResponse.json(
+            { message: `failed to register user ${error}` },
+            { status: 500 }
+        );
+    }
+}
