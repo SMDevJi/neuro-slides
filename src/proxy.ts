@@ -27,7 +27,7 @@ export default async function proxy(request: NextRequest) {
   // block unauthenticated users
   if (!isAuth && protectedRoutes.some(route => pathname.startsWith(route))) {
     const loginUrl = new URL("/authenticate", request.url);
-    loginUrl.searchParams.set("callbackUrl", request.url);
+    loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }
 

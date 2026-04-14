@@ -32,7 +32,6 @@ const LoginForm = () => {
       const res = await signIn('credentials', {
         email,
         password,
-        redirect: false,
         callbackUrl
       })
 
@@ -48,7 +47,8 @@ const LoginForm = () => {
       }
 
       toast.success('User logged in successfully!')
-      router.push(callbackUrl)
+      //console.log('Redirecting to.. ',callbackUrl)
+      //router.replace(callbackUrl)
 
     } catch (err: any) {
       setError(err.response?.data?.message || err.message)
