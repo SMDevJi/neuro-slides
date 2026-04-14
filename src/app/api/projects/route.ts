@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
         );
     } catch (error) {
         return NextResponse.json(
-            { message: `failed to register user ${error}` },
+            { message: `failed to create project ${error}` },
             { status: 500 }
         );
     }
@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
         });
     } catch (error) {
         return NextResponse.json(
-            { message: `failed to register user ${error}` },
+            { message: `failed to get projects ${error}` },
             { status: 500 }
         );
     }

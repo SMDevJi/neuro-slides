@@ -8,13 +8,16 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { VscLoading } from "react-icons/vsc";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 
 const LoginForm = () => {
   const [requesting, setRequesting] = useState(false)
   const [error, setError] = useState<null | string>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/workspace";
+  //console.log(callbackUrl)
   const router = useRouter()
 
 
@@ -25,10 +28,14 @@ const LoginForm = () => {
 
     try {
       setRequesting(true)
+
       const res = await signIn('credentials', {
-        email, password, redirect: false
+        email,
+        password,
+        redirect: false,
+        callbackUrl
       })
-      console.log(res)
+
       if (res && !res.ok) {
         if (res.error == 'CredentialsSignin') {
           setError('Invalid Credentials')
@@ -39,8 +46,10 @@ const LoginForm = () => {
         }
         return
       }
+
       toast.success('User logged in successfully!')
-      router.push('/workspace')
+      router.push(callbackUrl)
+
     } catch (err: any) {
       setError(err.response?.data?.message || err.message)
     } finally {
@@ -90,7 +99,7 @@ const LoginForm = () => {
       <form onSubmit={(e) => {
         e.preventDefault()
         signIn('google', {
-          callbackUrl: '/workspace'
+          callbackUrl
         })
       }}>
         <button

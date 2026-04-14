@@ -27,7 +27,8 @@ import { TiInfinity } from "react-icons/ti";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false)
-
+    const [showDropdown, setShowDropdown] = useState(false)
+    const dropdownRef = useRef<HTMLDivElement>(null)
     const { data: session, update } = useSession()
     const user = session?.user
     //console.log(user)
@@ -86,6 +87,20 @@ const Navbar = () => {
         setFrontendImg(user?.image ?? '')
     }, [user])
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setShowDropdown(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside)
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+        }
+    }, [])
+
     return (
         <div className="wrapper relative w-full text-xs md:text-lg">
             <nav className="flex justify-around items-center border border-b-gray-400 h-15 md:h-20 w-full fixed top-0 z-20 bg-white">
@@ -126,26 +141,28 @@ const Navbar = () => {
                             </div>
 
                             <div className="right flex justify-center">
-                                <div className="dd relative group inline-block">
+                                <div ref={dropdownRef} className="dd relative inline-block">
                                     {user?.image &&
                                         <Image
                                             src={user?.image}
                                             width={20}
                                             height={20}
                                             alt='User Image'
+                                            onClick={() => setShowDropdown(prev => !prev)}
                                             className='overflow-hidden rounded-full w-10 h-10 object-cover cursor-pointer'
                                         />
                                     }
                                     {!user?.image &&
                                         <button
-                                            className=" bg-green-800 text-white rounded-full p-2 w-7 md:w-10 h-7 md:h-10 flex justify-center items-center cursor-pointer">
+                                            onClick={() => setShowDropdown(prev => !prev)}
+                                            className="bg-green-800 text-white rounded-full p-2 w-7 md:w-10 h-7 md:h-10 flex justify-center items-center cursor-pointer">
                                             {user?.name?.[0]}
                                         </button>
                                     }
 
 
 
-                                    <div className="absolute left-1/2 -translate-x-[90%] top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300  bg-white border rounded-md shadow-lg">
+                                    <div className={`absolute left-1/2 -translate-x-[90%] top-full transition-all duration-300 bg-white border rounded-md shadow-lg ${showDropdown ? "opacity-100 visible" : "opacity-0 invisible"}`}>
                                         <ul className="p-3">
                                             <li className="flex items-center justify-start px-1 mb-2">
                                                 <div className="pf-img w-10 h-10">
@@ -225,7 +242,7 @@ const Navbar = () => {
 
 
                                                                 <label htmlFor="name" className="text-xl mt-2">Name..</label>
-                                                                <Input type="name" id='name' placeholder="Enter Your Email"
+                                                                <Input type="text" id='name' placeholder="Enter Your Name"
                                                                     className=" mb-2"
                                                                     value={editName}
                                                                     onChange={(e) => setEditName(e.target.value)}
@@ -253,7 +270,7 @@ const Navbar = () => {
                                             <hr />
                                             <li className="flex items-center">
                                                 <FaCoins size={11} />
-                                                <Link className="block p-2 hover:bg-gray-100" href="pricing">
+                                                <Link className="block p-2 hover:bg-gray-100 w-full" href="pricing">
                                                     Buy Credits
                                                 </Link>
                                             </li>

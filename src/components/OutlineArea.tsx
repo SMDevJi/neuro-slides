@@ -4,22 +4,23 @@ import { Outline } from '@/models/project.model'
 import { Button } from './ui/button'
 import { MdEditNote } from "react-icons/md";
 import EditOutlineDialog from './EditOutlineDialog';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type pageProps = {
     outlineGenerating: boolean
     outline: Outline[]
-    handleUpdateOutline:any
-    className?:string|null
-    showEdit:boolean
+    handleUpdateOutline: any
+    className?: string | null
+    showEdit: boolean
 }
 
-const OutlineArea = ({ outlineGenerating, outline,handleUpdateOutline,className,showEdit }: pageProps) => {
+const OutlineArea = ({ outlineGenerating, outline, handleUpdateOutline, className, showEdit }: pageProps) => {
 
     console.log(outlineGenerating)
 
     return (
         <div className={`my-7 ${className}`}>
-            
+
             {outlineGenerating &&
 
                 <div className=' mt-1'>
@@ -33,8 +34,12 @@ const OutlineArea = ({ outlineGenerating, outline,handleUpdateOutline,className,
 
             <div className='mb-24'>
                 {outline?.map((item, idx) =>
-                    <div key={idx}
+                    <motion.div key={idx}
                         className='bg-white p-5 rounded-xl flex gap-6 items-center border-2 mt-5'
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: idx+0.6 }}
+                        viewport={{ once: true }}
                     >
                         <h1 className='font-bold text-2xl  p-5 bg-green-200 rounded-xl'>{idx + 1}</h1>
                         <div>
@@ -48,11 +53,11 @@ const OutlineArea = ({ outlineGenerating, outline,handleUpdateOutline,className,
                             </button>
                         </EditOutlineDialog>}
 
-                    </div>
+                    </motion.div>
                 )}
             </div>
 
-            
+
         </div>
     )
 }

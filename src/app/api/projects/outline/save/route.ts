@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        if (!outline || !designStyle) {
+        if (!outline || !designStyle || !projectId) {
             return NextResponse.json({ error: "Missing fields" }, { status: 400 });
         }
 

@@ -26,7 +26,7 @@ Generate Image if needed using:
 Replace {imagePrompt} with relevant image prompt and altImageName with a random image name.  
 
 <!-- Slide Content Wrapper (Fixed 16:9 Aspect Ratio) -->
-<div class="w-full h-full relative overflow-scroll p-6">
+<div class="w-full h-full relative overflow-hidden p-6">
   <!-- Slide content here -->
 </div>
 Also do not add any overlay : Avoid this :

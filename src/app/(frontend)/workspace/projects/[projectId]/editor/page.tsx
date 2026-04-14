@@ -18,7 +18,7 @@ const page = () => {
     const [project, setProject] = useState<IProject | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null)
-    const [slides, setSlides] = useState<Slide[]>()
+    const [slides, setSlides] = useState<Slide[]>([])
     const [isSlidesGenerated, setIsSlidesGenerated] = useState<any>();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [downloadLoading, setDownloadLoading] = useState(false);
@@ -76,7 +76,7 @@ const page = () => {
     const generateSlides = async () => {
         if (!project?.outline || project.outline.length === 0) return;
 
-        console.log("🚀 Starting slide generation...");
+        console.log("Starting slide generation...");
 
 
         for (let index = 0; index < project.outline.length; index++) {
@@ -84,7 +84,7 @@ const page = () => {
             const designData = project?.designStyle;
 
 
-            console.log("🧠 Generating slide", index + 1);
+            console.log("Generating slide", index + 1);
             await GeminiSlideCall(metaData, designData!, index); // wait for one slide to finish before next
             console.log("Finished slide", index + 1);
         }

@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
                 payment_method_types: ["card"],
                 mode: "payment",
                 success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success/?title=${planId}&price=${price}&coins=${credits}`,
-                cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pricing`,
+                cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-cancelled`,
                 metadata: {
                     userId: userId,
                     plan: planId,
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
                 payment_method_types: ["card"],
                 mode: "subscription",
                 success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success/?title=${planId}&price=${price}&coins=${credits}`,
-                cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/pricing`,
+                cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-cancelled`,
                 metadata: {
                     userId: userId,
                     plan: planId,

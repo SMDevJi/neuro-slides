@@ -1,3 +1,4 @@
+export const revalidate = 2592000;
 import Link from "next/link";
 
 export default function Footer() {

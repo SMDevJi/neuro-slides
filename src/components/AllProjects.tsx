@@ -80,18 +80,20 @@ const AllProjects = () => {
                                 your first project.
                             </EmptyDescription>
                         </EmptyHeader>
-                        <EmptyContent className="flex-row justify-center gap-2">
-                            <Button className='rounded-sm cursor-pointer'>Create Project</Button>
-                        </EmptyContent>
+
 
                     </Empty>
                     :
-                    <div className='grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4'>
+                    <div className='grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4'>
                         {projects.map((project, index) => (
-                            <Link key={project?._id.toString()} href={`/workspace/projects/${project?._id.toString()}/editor`}>
-                                <div  className='p-4 border rounded-2xl shadow mt-3 space-y-2'>
+                            <Link key={project?._id.toString()} href={`/workspace/projects/${project?._id.toString()}/editor`} className='hover:scale-105 transition'>
+                                <div className='p-4 border rounded-2xl shadow mt-3 space-y-2'>
                                     <img src="/ppt.png" alt="PPT Logo" width={50} height={50} />
-                                    <h2 className='font-bold text-lg'>{project?.userInputPrompt}</h2>
+                                    <h2 className='font-bold text-lg'>
+                                        {project?.userInputPrompt?.length > 50
+                                            ? project.userInputPrompt.slice(0, 50) + "..."
+                                            : project.userInputPrompt}
+                                    </h2>
                                     <h2 className='text-gray-500 '>Total {project.slides?.length} Slides</h2>
                                     <p className='text-red-600'>{formatDate(project?.createdAt)}</p>
                                 </div>

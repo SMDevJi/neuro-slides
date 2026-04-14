@@ -1,7 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { sendOtp } from "@/lib/otp";
 import Otp from "@/models/otp.model";
-import User from "@/models/user.model"; // import user model
+import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export const otpValidMins = 2;
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
             await sendOtp(email, newOtp);
 
-            return NextResponse.json({ success: true, message: "New OTP sent" });
+            return NextResponse.json({ success: true, message: "New OTP sent" ,otpValidMins});
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();

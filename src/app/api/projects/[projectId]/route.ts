@@ -21,7 +21,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ proj
         });
     } catch (error) {
         return NextResponse.json(
-            { message: `failed to register user ${error}` },
+            { message: `failed to fetch project ${error}` },
             { status: 500 }
         );
     }

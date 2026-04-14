@@ -68,7 +68,7 @@ export default function PricingPage() {
   return (
     <div className="max-w-5xl min-h-[75vh] mx-auto p-6">
 
-      <h1 className="text-3xl font-bold mb-8">Pricing</h1>
+      <h1 className="text-3xl font-bold mb-8 mt-20 text-center">Pricing</h1>
 
 
       <div className="plans grid md:grid-cols-2 gap-6 mb-12">

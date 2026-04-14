@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, Document } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 export interface IOtp {
     _id: mongoose.Types.ObjectId;

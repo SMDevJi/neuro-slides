@@ -9,28 +9,28 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(req: Request) {
-    // 1️⃣ Get raw body as text
+    //  Get raw body as text
     const body = await req.text();
 
-    // 2️⃣ Get signature from request headers
+    //  Get signature from request headers
     const signature = req.headers.get("stripe-signature");
     if (!signature) {
         return new NextResponse("Missing Stripe signature", { status: 400 });
     }
 
-    // 3️⃣ Verify webhook
+    //  Verify webhook
     let event: Stripe.Event;
     try {
         //console.log(body, signature, endpointSecret)
         event = stripe.webhooks.constructEvent(body, signature, endpointSecret);
     } catch (err: any) {
-        console.error("⚠️ Webhook signature verification failed.", err.message);
+        console.error(" Webhook signature verification failed.", err.message);
         return new NextResponse("Webhook Error", { status: 400 });
     }
 
     await connectDB();
 
-    // 4️⃣ Handle event
+    //  Handle event
     //console.log(event.type)
     switch (event.type) {
         case "checkout.session.completed": {

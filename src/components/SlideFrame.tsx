@@ -3,10 +3,11 @@ import FloatingActionTool from './FloatingActionTool';
 
 import { useParams } from 'next/navigation';
 import axios from 'axios';
+import { Slide } from '@/models/project.model';
 
 
 type props = {
-    slide: string
+    slide: Slide
     colors: any,
     setUpdatedSlider: any
 }
@@ -89,7 +90,7 @@ const SlideFrame = ({ slide, colors, setUpdatedSlider }: props) => {
     const [loading, setLoading] = useState(false);
     const selectedElRef = useRef<HTMLElement | null>(null);
     const [cardPosition, setCardPosition] = useState<{ x: number, y: number } | null>(null)
-    const saveTimeoutRef = useRef<any>(null);
+
 
     useEffect(() => {
         if (!iframeRef.current) return;
@@ -129,9 +130,10 @@ const SlideFrame = ({ slide, colors, setUpdatedSlider }: props) => {
 
             if (selectedEl === target) return;
             if (selectedEl && selectedEl !== target) {
-                handleBlur(); //save changes first
+                 //save changes first
                 selectedEl.style.outline = "";
                 selectedEl.removeAttribute("contenteditable");
+                handleBlur();
             }
 
             //Select new element
@@ -143,17 +145,15 @@ const SlideFrame = ({ slide, colors, setUpdatedSlider }: props) => {
             selectedEl.focus();
 
             console.log("Selected element:", selectedEl);
-            // ✅ Attach blur event dynamically
-            //selectedEl?.addEventListener("blur", handleBlur);
             //selectedEl?.addEventListener("input", handleInput);
-
-            
 
             const rect = target.getBoundingClientRect();
 
+
+            console.log(rect.bottom, window.innerHeight)
             setCardPosition({
                 x: rect.left + rect.width / 2,
-                y: rect.bottom
+                y: Math.min(rect.bottom, window.innerHeight - (rect.height / 2))
             });
 
         };
@@ -167,25 +167,24 @@ const SlideFrame = ({ slide, colors, setUpdatedSlider }: props) => {
             }
         };
 
-        const handleInput = () => {
-            const iframe = iframeRef.current;
-            if (!iframe) return;
+        // const handleInput = () => {
+        //     const iframe = iframeRef.current;
+        //     if (!iframe) return;
 
-            if (saveTimeoutRef.current) {
-                clearTimeout(saveTimeoutRef.current);
-            }
+        //     if (saveTimeoutRef.current) {
+        //         clearTimeout(saveTimeoutRef.current);
+        //     }
 
-            saveTimeoutRef.current = setTimeout(() => {
-                const updatedSliderCode = iframe.contentDocument?.body?.innerHTML;
-                setUpdatedSlider(updatedSliderCode);
-            }, 1500); // save after user stops typing
-        };
+        //     saveTimeoutRef.current = setTimeout(() => {
+        //         const updatedSliderCode = iframe.contentDocument?.body?.innerHTML;
+        //         setUpdatedSlider(updatedSliderCode);
+        //     }, 1500); // save after user stops typing
+        // };
 
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape" && selectedEl) {
                 selectedEl.style.outline = "";
                 selectedEl.removeAttribute("contenteditable");
-                selectedEl.removeEventListener("blur", handleBlur);
                 selectedEl = null;
 
             }
@@ -241,9 +240,11 @@ const SlideFrame = ({ slide, colors, setUpdatedSlider }: props) => {
                     selectedElRef.current = newNode as HTMLElement;
                     console.log("Element replaced successfully");
 
-                    const updatedSliderCode = iframe.contentDocument?.body?.innerHTML || newHTML
-                    console.log(updatedSliderCode);
-                    setUpdatedSlider(updatedSliderCode)
+                    const updatedSliderCode = iframe.contentDocument?.body?.innerHTML;
+
+                    if (updatedSliderCode) {
+                        setUpdatedSlider(updatedSliderCode);
+                    }
                 }
             }
         } catch (err: any) {

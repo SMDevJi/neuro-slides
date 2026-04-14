@@ -21,16 +21,12 @@ async function generateContent(prompt: string) {
 export async function generateContentStream(prompt: string) {
 
   const response = await ai.models.generateContentStream({
-    model: "gemma-3-27b-it",
+    model: process.env.GEMINI_MODEL!,
     contents: prompt,
   });
 
-  // for await (const chunk of response) {
-  //   console.log(chunk.text);
-  // }
 
   return response
-  //return response.text?.replace('```json','').replace('```','')
 }
 
 

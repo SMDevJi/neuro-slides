@@ -140,7 +140,7 @@ const page = () => {
         </div>
     }
     return (
-        <div className='mt-35 min-h-[75vh] flex flex-col items-center'>
+        <div className='mt-35 min-h-[75vh] flex flex-col items-center p-3'>
             <div className="max-w-3xl">
                 <h1 className=" text-2xl font-bold">Select Settings and Slider Outline</h1>
                 <SliderStyles selectedStyle={selectedStyle} setSelectedStyle={setSelectedStyle} />

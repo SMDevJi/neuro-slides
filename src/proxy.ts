@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const token = await getToken({
@@ -11,15 +11,20 @@ export default async function middleware(request: NextRequest) {
 
   const isAuth = !!token;
 
-  const publicOnlyRoutes = ["/", "/authenticate"];
+  const publicOnlyRoutes = ["/authenticate"];
   const protectedRoutes = ["/workspace", "/pricing"];
 
-  // logged in users only
+  // redirect logged-in users away from auth pages
   if (isAuth && publicOnlyRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/workspace", request.url));
   }
 
-  // logged out users cannot access protected pages
+  // optional: redirect homepage if logged in
+  if (isAuth && pathname === "/") {
+    return NextResponse.redirect(new URL("/workspace", request.url));
+  }
+
+  // block unauthenticated users
   if (!isAuth && protectedRoutes.some(route => pathname.startsWith(route))) {
     const loginUrl = new URL("/authenticate", request.url);
     loginUrl.searchParams.set("callbackUrl", request.url);

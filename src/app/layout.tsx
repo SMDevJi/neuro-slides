@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import { Roboto_Condensed, Geist } from "next/font/google";
+import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { cn } from "@/lib/utils";
 import Footer from "@/components/Footer";
 import ToastContainer from "@/components/ToastContainer";
 import ClientProvider from "@/providers/ClientProvider";
-import ReduxProvider from "@/providers/ReduxProvider";
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 const RobotoCondensed = Roboto_Condensed({
   subsets: ["latin"]
@@ -25,17 +22,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" >
       <body
         className={` ${RobotoCondensed.className} antialiased text-lg `}
       >
         <ClientProvider>
-          <ReduxProvider>
             <Navbar />
             {children}
             <ToastContainer />
             <Footer />
-          </ReduxProvider>
         </ClientProvider>
 
       </body>

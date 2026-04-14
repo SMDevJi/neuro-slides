@@ -103,6 +103,13 @@ const authoptions: NextAuthOptions = {
                 session.user.credits = token.credits
             }
             return session
+        },
+        async redirect({ url, baseUrl }) {
+            // allow relative callback URLs
+            if (url.startsWith("/")) return `${baseUrl}${url}`;
+            if (url.startsWith(baseUrl)) return url;
+
+            return baseUrl;
         }
     },
     session: {

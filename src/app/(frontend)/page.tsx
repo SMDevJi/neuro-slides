@@ -37,9 +37,11 @@ const page = () => {
             <section className=" px-3">
                 <div className="max-w-6xl mx-auto flex flex-col items-center ">
                     <h1 className="text-center text-2xl md:text-3xl mb-3 mt-5">Generate ppt with one prompt</h1>
-                    <img
+                    <video
                         className="w-full md:w-[75%] rounded-lg"
-                        src="cat.gif" alt="Demo" />
+                        src="NeuroSlides.mp4" autoPlay
+                        muted
+                        loop />
                 </div>
             </section>
 

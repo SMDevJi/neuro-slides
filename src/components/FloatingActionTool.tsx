@@ -23,7 +23,7 @@ const FloatingActionTool = ({ position, onClose,handleAiChange,loading }: Props)
              border flex text-sm items-center'
 
             style={{
-                top: position.y + 60,
+                top: position.y + 20,
                 left: position.x,
                 transform: "translateX(-50%)"
             }}
