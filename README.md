@@ -8,7 +8,7 @@ Users can generate slides from prompts, edit content using AI before saving, gen
 ## ✨ Demo
 - Demo of the project
 
-
+https://github.com/user-attachments/assets/df642ec0-e4d1-43f6-afa1-481474f12a42
 
 ---
 
